@@ -48,8 +48,8 @@ kotlin {
         }
         nativeMain.dependencies {
             // The port's own windowing / main-loop API (not substituted); tracks
-            // the substituted version the bridge is using.
-            implementation("com.bitsycore.compose.sdl:window:$cdn")
+            // the substituted version the bridge is using. Renamed from :window in 0.4.0.
+            implementation("com.bitsycore.compose:desktop-native-window:$cdn")
         }
         jvmMain.dependencies {
             // Compose Desktop entry point

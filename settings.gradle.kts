@@ -52,6 +52,22 @@ dependencyResolutionManagement {
                 password = System.getenv("GITHUB_TOKEN")
                     ?: providers.gradleProperty("gpr.token").orNull ?: ""
             }
+            // The skiko fork lives in its own repo (below), not here.
+            content { excludeGroup("com.bitsycore.skiko") }
+        }
+        // Windows (mingwX64) renders through the bitsycore skiko fork, published to
+        // its own GitHub Packages repo as com.bitsycore.skiko:skiko / :skiko-mingwx64.
+        // (macOS/Linux use the official org.jetbrains.skiko from Maven Central.)
+        maven {
+            name = "ComposeDesktopNativeSkiko"
+            url = uri("https://maven.pkg.github.com/bitsycore/skiko")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                    ?: providers.gradleProperty("gpr.user").orNull ?: ""
+                password = System.getenv("GITHUB_TOKEN")
+                    ?: providers.gradleProperty("gpr.token").orNull ?: ""
+            }
+            content { includeGroup("com.bitsycore.skiko") }
         }
     }
 }

@@ -37,7 +37,7 @@ only the **official** `org.jetbrains.compose.*` coordinates. One line in
 `settings.gradle.kts` does the rest:
 
 ```kotlin
-plugins { id("com.bitsycore.compose-desktop-native.bridge") version "0.1.17" }
+plugins { id("com.bitsycore.compose-desktop-native.bridge") version "0.4.1" }
 ```
 
 On the Kotlin/Native desktop targets the plugin substitutes
