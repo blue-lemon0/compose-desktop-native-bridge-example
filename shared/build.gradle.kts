@@ -23,7 +23,7 @@ kotlin {
 
     // The bridge plugin reports the exact Compose versions the port tracks, so
     // we never hand-match them against the release (material3 is versioned
-    // separately upstream — an easy mismatch this removes). `.version` is the
+    // separately upstream - an easy mismatch this removes). `.version` is the
     // port klib version being substituted.
     val cmp = composeDesktopNative.compose
     val cmpMaterial3 = composeDesktopNative.composeMaterial3
@@ -69,7 +69,7 @@ compose.desktop {
     application {
         mainClass = "bubblewrap.MainJvmKt"
     }
-    // compose-desktop-native entry point — the bridge plugin declares an
+    // compose-desktop-native entry point - the bridge plugin declares an
     // executable with this entry point on every native desktop target.
     native {
         entryPoint = "bubblewrap.main"

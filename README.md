@@ -1,18 +1,18 @@
 # Bubble Wrap 🫧
 
-A tiny, deliberately silly **Material 3 bubble-wrap simulator** — and a
+A tiny, deliberately silly **Material 3 bubble-wrap simulator** - and a
 complete consumer example for
 [compose-desktop-native](https://github.com/bitsycore/compose-desktop-native)'s
 **bridge plugin**: one shared Compose Multiplatform codebase that runs
 
 - on **Android** (Google's androidx.compose artifacts),
 - on **upstream Compose Desktop** (JVM), and
-- as **self-contained native executables** — Windows (mingwX64), Linux
-  (x64 / arm64) and macOS (arm64) — **no JVM**, rendering through SDL3/Skia.
+- as **self-contained native executables** - Windows (mingwX64), Linux
+  (x64 / arm64) and macOS (arm64) - **no JVM**, rendering through SDL3/Skia.
 
 Pop bubbles, resize them with a slider, flip dark/light, get a fresh sheet.
 Bouncy spring physics included. The bubble logo and the strings come from
-**`composeResources/`** — same files, same generated `Res.*` accessors on
+**`composeResources/`** - same files, same generated `Res.*` accessors on
 every platform; on the native targets the bridge bundles them into
 `data.kres` next to the executable automatically.
 
@@ -20,13 +20,13 @@ every platform; on the native targets the bridge bundles them into
 
 Two modules, the current Android-recommended shape for a KMP app:
 
-- **`:shared`** — the whole app as a Compose Multiplatform library. The
+- **`:shared`** - the whole app as a Compose Multiplatform library. The
   Android target comes from AGP's KMP library plugin
   (`com.android.kotlin.multiplatform.library`), declared as
-  `androidLibrary {}` right inside the `kotlin {}` block — no `android {}`
+  `androidLibrary {}` right inside the `kotlin {}` block - no `android {}`
   block, no manifest. The jvm/native desktop entry points and the bridge
   plugin live here too.
-- **`:androidApp`** — a plain `com.android.application` module: one
+- **`:androidApp`** - a plain `com.android.application` module: one
   Activity, one manifest, `implementation(project(":shared"))`.
 
 ## The point
@@ -42,9 +42,9 @@ plugins { id("com.bitsycore.compose-desktop-native.bridge") version "0.4.1" }
 
 On the Kotlin/Native desktop targets the plugin substitutes
 compose-desktop-native's klibs for those coordinates; every other target keeps
-resolving upstream — on **Android**, JetBrains' own artifacts already redirect
+resolving upstream - on **Android**, JetBrains' own artifacts already redirect
 to Google's `androidx.compose.*`, the exact same trick one layer up. SDL3 and
-its codecs ship as static archives *inside* the klibs — nothing to install,
+its codecs ship as static archives *inside* the klibs - nothing to install,
 and a distributable is just the executable.
 
 ## Setup
@@ -61,15 +61,15 @@ gpr.token=<your-pat>
 ## Run
 
 ```bash
-# Native — self-contained executable, no JVM
+# Native - self-contained executable, no JVM
 ./gradlew :shared:runDebugExecutableMingwX64      # Windows
 ./gradlew :shared:runDebugExecutableLinuxX64      # Linux
 ./gradlew :shared:runDebugExecutableMacosArm64    # macOS (Apple Silicon)
 
-# Upstream Compose Desktop (JVM) — the same App()
+# Upstream Compose Desktop (JVM) - the same App()
 ./gradlew :shared:run
 
-# Android — the same App() on androidx.compose
+# Android - the same App() on androidx.compose
 ./gradlew :androidApp:installDebug        # or open in Android Studio
 ```
 

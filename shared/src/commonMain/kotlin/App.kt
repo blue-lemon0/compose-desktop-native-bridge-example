@@ -51,12 +51,12 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 // ==================
-// MARK: Bubble Wrap — the shared app
+// MARK: Bubble Wrap - the shared app
 // ==================
 // Everything below is plain Compose Multiplatform code against the OFFICIAL
 // androidx.compose.* API. The same composable runs on upstream Compose
 // Desktop (jvm) and on compose-desktop-native (Kotlin/Native + SDL3, no JVM)
-// via the bridge plugin — see settings.gradle.kts.
+// via the bridge plugin - see settings.gradle.kts.
 
 @Composable
 fun App() {
@@ -77,7 +77,7 @@ private fun BubbleWrap(dark: Boolean, onToggleDark: () -> Unit) {
     val total = cols * (84 / cols)   // ~84 bubbles, full rows only
     val rows = total / cols
 
-    // Which bubbles are popped — reset gets a fresh sheet.
+    // Which bubbles are popped - reset gets a fresh sheet.
     var popped by remember { mutableStateOf(setOf<Int>()) }
     val allPopped = popped.size == total
 
@@ -85,13 +85,13 @@ private fun BubbleWrap(dark: Boolean, onToggleDark: () -> Unit) {
     // edge-to-edge (the Surface still paints behind them); zero on desktop.
     Column(Modifier.fillMaxSize().safeDrawingPadding().padding(16.dp)) {
         // ============
-        //  Header — title, score, theme toggle, reset
+        //  Header - title, score, theme toggle, reset
         Row(verticalAlignment = Alignment.CenterVertically) {
-            // composeResources drawable — decoded by the active renderer.
+            // composeResources drawable - decoded by the active renderer.
             Image(painterResource(Res.drawable.bubble), contentDescription = null, modifier = Modifier.size(48.dp))
             Spacer(Modifier.width(10.dp))
             Column {
-                // composeResources strings — values/strings.xml, same as anywhere.
+                // composeResources strings - values/strings.xml, same as anywhere.
                 Text(stringResource(Res.string.app_title), style = MaterialTheme.typography.headlineMedium)
                 Text(
                     if (allPopped) stringResource(Res.string.all_popped) else "${popped.size} / $total popped",
@@ -106,7 +106,7 @@ private fun BubbleWrap(dark: Boolean, onToggleDark: () -> Unit) {
         }
 
         // ============
-        //  Bubble size — fewer columns = bigger, more satisfying bubbles
+        //  Bubble size - fewer columns = bigger, more satisfying bubbles
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Bubble size", style = MaterialTheme.typography.labelLarge)
             Slider(
@@ -160,7 +160,7 @@ private fun Bubble(popped: Boolean, onPop: () -> Unit, modifier: Modifier = Modi
     // The bubble fills its weight-distributed grid cell and stays square, so
     // the column count actually drives the diameter: fewer columns = bigger.
     // Bubble, highlight dot and hover feedback are plain circles in a single
-    // drawBehind — no clip layers and no ripple (the ripple's hover state
+    // drawBehind - no clip layers and no ripple (the ripple's hover state
     // layer is a bounds-sized square, and per-bubble clipped layers are what
     // made the native renderer crawl). Only the pop squish keeps a layer.
     Box(
