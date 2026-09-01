@@ -15,6 +15,10 @@ pluginManagement {
                     ?: providers.gradleProperty("gpr.token").orNull ?: ""
             }
         }
+        maven { url = uri("https://maven.aliyun.com/repository/google") }
+        maven { url = uri("https://maven.aliyun.com/repository/public") }
+        maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
+        maven { url = uri("https://maven.aliyun.com/repository/jetbrains") }
     }
     plugins {
         // -PbridgeVersion=… overrides (e.g. locally-published snapshot).
@@ -69,6 +73,9 @@ dependencyResolutionManagement {
             }
             content { includeGroup("com.bitsycore.skiko") }
         }
+        maven { url = uri("https://maven.aliyun.com/repository/google") }
+        maven { url = uri("https://maven.aliyun.com/repository/public") }
+        maven { url = uri("https://maven.aliyun.com/repository/jetbrains") }
     }
 }
 

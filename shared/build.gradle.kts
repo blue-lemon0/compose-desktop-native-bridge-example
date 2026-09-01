@@ -1,3 +1,5 @@
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.kotlin.plugin.compose")
@@ -13,6 +15,9 @@ kotlin {
         namespace = "com.bitsycore.bubblewrap.shared"
         compileSdk = 37
         minSdk = 24
+        // For the KMP library plugin, Compose Multiplatform resources need
+        // Android resource support enabled to be routed into the AAR/APK.
+        androidResources.enable = true
     }
 
     // Compose Desktop Native
@@ -62,12 +67,20 @@ compose.resources {
     // Keep the Res package from the single-module days so App.kt's
     // bubble_wrap.generated.resources imports stay stable.
     packageOfResClass = "bubble_wrap.generated.resources"
+    // Library module consumed by :androidApp - the generated Res class must be
+    // public so the consumer can access the resource accessors.
+    publicResClass = true
 }
 
 compose.desktop {
     // Upstream Compose Desktop (jvm) entry point.
     application {
         mainClass = "bubblewrap.MainJvmKt"
+        nativeDistributions {
+            targetFormats(TargetFormat.Exe, TargetFormat.Msi)
+            packageName = "BubbleWrap"
+            packageVersion = "1.0.0"
+        }
     }
     // compose-desktop-native entry point - the bridge plugin declares an
     // executable with this entry point on every native desktop target.
