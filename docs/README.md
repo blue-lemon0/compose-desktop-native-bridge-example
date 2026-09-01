@@ -212,15 +212,33 @@ PATH 追加  msys64\mingw64\bin（链接器 gcc）
 
 ### 6.1 native exe 双击"黑窗口/闪退"
 
-**症状**：双击 `shared.exe` 窗口一闪而过 / 无提示退出。
+**症状**：双击 `shared.exe` 时，先弹出一个**黑色控制台窗口**，然后才出现真正的泡泡纸窗口。
 
-**排查结论（本机实测）**：
-- 与 jpackage 安装版**无冲突** —— 两者可同时运行，Windows 没有"包名互斥"机制。
-- 单独 exe 也能出窗口（测试环境），但**稳定分发必须带 `data.kres` 等资源**。
-- 黑窗口闪退最常因 **`data.kres` 不在 exe 旁 / 工作目录不对**，资源加载失败即退出。
+**根因**：Kotlin/Native **默认把 Windows 可执行文件编译成 "console (CUI)" 子系统**。
+CUI 程序由系统提供一个控制台承载 stdout/stderr，所以双击时 Windows 先开黑窗。
+对比：jpackage 生成的 `BubbleWrap.exe` 是 "Windows GUI (2)" 子系统，所以无黑窗。
+（通过 PE 头的 Optional Header → Subsystem 字段区分：`2`=GUI，`3`=CUI。）
 
-**建议**：始终把 native exe 放在**完整文件夹**里运行（exe + skiko dll + icudtl.dat + data.kres），
-不要只拷 exe。
+**修复**：给 native executable 加链接器参数指定 GUI 子系统即可，在 `shared/build.gradle.kts`：
+```kotlin
+mingwX64 {
+    binaries {
+        executable {
+            linkerOpts("-Wl,--subsystem,windows")
+        }
+    }
+}
+```
+说明：
+- 必须用 `binaries.executable { linkerOpts }`（binaries DSL），**不是** compilation 的 `linkerOpts`
+  —— 后者只对旧式 `compilation.outputKinds` 生效，不作用于 binaries DSL 创建的 exe。
+- `linkerOpts` 是**累加**的，不会覆盖 bridge 插件注入的图标参数和 entryPoint。
+- 改后验证：重新 `linkDebugExecutableMingwX64` → PE subsystem 变成 `GUI (2)` → 双击无黑窗。
+- `stdout`/`stderr` 会失去控制台（GUI 程序本来就不需要），但如果仍需看日志，建议写文件。
+
+> 附带说明：真正**闪退**（窗口全无）时，多半是 `data.kres` 不在 exe 旁 / 工作目录不对，
+> 资源加载失败即退出。稳定分发始终应包含完整文件夹
+> （exe + skiko-windows-x64.dll + icudtl.dat + data.kres）。
 
 ### 6.2 native 链接报 "Could not find ...-mingwx64-*.klib"
 

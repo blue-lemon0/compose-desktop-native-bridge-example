@@ -24,7 +24,19 @@ kotlin {
     macosArm64()
     linuxX64()
     linuxArm64()
-    mingwX64()
+    mingwX64 {
+        binaries {
+            // The bridge plugin creates the executable for this target via the
+            // standard `binaries.executable` DSL. By default Kotlin/Native links
+            // a console-subsystem binary, so Windows shows a black console window
+            // before the SDL window opens. Re-link as a GUI-subsystem binary to
+            // suppress that console. (`linkerOpts` is additive - the bridge's
+            // icon/entryPoint settings are preserved.)
+            executable {
+                linkerOpts("-Wl,--subsystem,windows")
+            }
+        }
+    }
 
     // The bridge plugin reports the exact Compose versions the port tracks, so
     // we never hand-match them against the release (material3 is versioned
