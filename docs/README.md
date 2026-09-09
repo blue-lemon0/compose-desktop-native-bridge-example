@@ -22,6 +22,7 @@
 - [5. 平台差异与难点](#5-平台差异与难点)
 - [6. 疑难排查（Troubleshooting）](#6-疑难排查troubleshooting)
 - [7. 版本与依赖地图](#7-版本与依赖地图)
+- [8. Git 协作：fork 工作流](#8-git-协作fork-工作流)
 
 ---
 
@@ -278,3 +279,11 @@ compose.resources { publicResClass = true }
 local.properties      →  sdk.dir=<你的 Android SDK 路径>
 ~/.gradle             →  gpr.user / gpr.token（GitHub Packages 认证）
 ```
+
+---
+
+## 8. Git 协作：fork 工作流
+
+main 保持纯净、改动放旁支的 Fork 维护模型，以及同步官方 / 合并改动 / 发起 PR 的常用命令。
+
+[阅读完整文档 → fork-workflow.md](fork-workflow.md)
